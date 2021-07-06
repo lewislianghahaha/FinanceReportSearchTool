@@ -309,7 +309,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.Menu;
             this.Name = "Main";
-            this.Text = "财务报表查询";
+            this.Text = "财务报表查询工具";
             this.Menu.ResumeLayout(false);
             this.Menu.PerformLayout();
             this.panel2.ResumeLayout(false);
