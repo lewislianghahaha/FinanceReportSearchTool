@@ -76,7 +76,7 @@
 	                                   AND (case t2.FFLEXITEMPROPERTYID when 4 then t3.fname when 100017 then t4.fname else '' end)<>''
 	                                 )X
 	                                 WHERE (X.销售员='{saleman}' OR '{saleman}'='')
-	                                 ORDER BY X.凭证日期
+	                                 ORDER BY X.科目编码,X.凭证日期
 
 
 	                                 SELECT @COUNT=COUNT(*) FROM #temp1
