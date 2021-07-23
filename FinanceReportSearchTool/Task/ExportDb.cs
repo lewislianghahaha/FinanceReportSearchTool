@@ -59,7 +59,7 @@ namespace FinanceReportSearchTool.Task
                             {
                                 //在前两位设置为字符串类型,后面的都是设置小数类型
                                 //(注:要注意值小数位数保留两位;当超出三位小数的时候,会出现OutofMemory异常.)
-                                if (k == 0 || k == 1)
+                                if (k == 0 || k == 1 || k==2)
                                 {
                                     row.CreateCell(k,CellType.String).SetCellValue(Convert.ToString(sourcedt.Rows[r][k]));
                                 }

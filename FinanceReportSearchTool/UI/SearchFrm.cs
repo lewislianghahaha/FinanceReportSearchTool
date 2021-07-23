@@ -56,10 +56,13 @@ namespace FinanceReportSearchTool.UI
                 var edt = dtend.Value.ToString("yyyy-MM-dd");
                 //获取‘销售员’
                 var salesman = txtsales.Text;
+                //获取‘部门’
+                var dep = txtdep.Text;
                 //将各变量参数赋值给task变量
                 taskLogic.Sdt = sdt;
                 taskLogic.Edt = edt;
                 taskLogic.Salesman = salesman;
+                taskLogic.Dep = dep;
 
                 //子线程调用
                 new Thread(SearchPzstReport).Start();

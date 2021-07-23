@@ -11,6 +11,7 @@ namespace FinanceReportSearchTool.UI
     {
         SearchFrm searchFrm=new SearchFrm();
         TaskLogic taskLogic=new TaskLogic();
+        GenerateDb generateDb=new GenerateDb();
         Load load=new Load();
 
         #region 变量参数
@@ -79,7 +80,8 @@ namespace FinanceReportSearchTool.UI
                         gvdtl.DataSource = dt;
                     }
 
-                    _dtl = searchFrm.ResultTable;
+                    //需要将从查询结果得出的数据进行整合  add date:20210723
+                    _dtl = generateDb.GenerateDt(searchFrm.ResultTable);
                     panel2.Visible = true;
                     //初始化下拉框所选择的默认值
                     tmshowrows.SelectedItem = Convert.ToInt32(tmshowrows.SelectedItem) == 0
@@ -89,6 +91,8 @@ namespace FinanceReportSearchTool.UI
                     _pageChange = _pageCurrent <= 1;
                     //GridView分页
                     GridViewPageChange();
+                    //控制GridView单元格显示方式
+                    //ControlGridViewShow();
                 }
             }
             catch (Exception ex)
@@ -154,6 +158,16 @@ namespace FinanceReportSearchTool.UI
                 load.Close();
             }));
         }
+
+        ///// <summary>
+        ///// 控制GridView单元格显示方式
+        ///// </summary>
+        //private void ControlGridViewShow()
+        //{
+        //    //注:当没有值时,若还设置某一行Row不显示的话,就会出现异常
+        //    if (gvdtl?.Rows.Count >= 0)
+        //        gvdtl.Columns[0].Visible = false;
+        //}
 
         /// <summary>
         /// 首页按钮(GridView页面跳转时使用)

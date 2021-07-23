@@ -13,6 +13,8 @@ namespace FinanceReportSearchTool.Task
         private string _sdt;        //开始日期
         private string _edt;       //结束日期
         private string _salesman; //销售员
+        private string _dep;      //部门
+
 
         private DataTable _resultTable; //返回Dt记录集
 
@@ -34,7 +36,10 @@ namespace FinanceReportSearchTool.Task
         /// 销售员
         /// </summary>
         public string Salesman { set { _salesman = value; } }
-
+        /// <summary>
+        /// 部门
+        /// </summary>
+        public string Dep { set { _dep = value; } }
 
         /// <summary>
         /// 获取Dt记录集(用于导出至EXCEL)
@@ -62,7 +67,7 @@ namespace FinanceReportSearchTool.Task
         /// </summary>
         public void SearchPzstReport()
         {
-            _resultTable = searchDb.SearchPzst(_sdt, _edt, _salesman);
+            _resultTable = searchDb.SearchPzst(_sdt, _edt, _salesman,_dep);
         }
 
         /// <summary>

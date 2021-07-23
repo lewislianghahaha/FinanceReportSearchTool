@@ -40,9 +40,9 @@ namespace FinanceReportSearchTool.Task
         /// 查询‘凭证销售统计报表’
         /// </summary>
         /// <returns></returns>
-        public DataTable SearchPzst(string sdt,string edt,string salesman)
+        public DataTable SearchPzst(string sdt,string edt,string salesman,string dep)
         {
-            _sqlscript = sqlList.Get_SearchPZSTReport(sdt,edt,salesman);
+            _sqlscript = sqlList.Get_SearchPZSTReport(sdt,edt,salesman,dep);
             return UseSqlSearchIntoDt(_sqlscript);
         }
 
