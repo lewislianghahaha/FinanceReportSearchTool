@@ -21,16 +21,16 @@
 
 	                        CREATE TABLE #temp1(
 	                                            部门 NVARCHAR(250),凭证日期 nvarchar(250),AA NVARCHAR(100),
-	                                            科目编码 nvarchar(250),科目名称 nvarchar(250),摘要 nvarchar(250),
-	                                            销售员 nvarchar(250),
+	                                            科目编码 nvarchar(250),科目名称 nvarchar(250),科目简称 nvarchar(250),
+                                                摘要 nvarchar(250),销售员 nvarchar(250),
 	                                            本位币金额 DECIMAL(25,2),借方金额 DECIMAL(25,2),贷方金额 DECIMAL(25,2),
 						                        余额方向 NVARCHAR(200)
 	                                            )
 	                     
 	                        INSERT INTO #temp1(
 	                                        部门,凭证日期,AA,
-	                                        科目编码,科目名称,摘要,
-	                                        销售员,
+	                                        科目编码,科目名称,科目简称,
+                                            摘要,销售员,
 	                                        本位币金额,借方金额,贷方金额,
 						                    余额方向)
 	                        SELECT * 
@@ -42,7 +42,8 @@
 		                        ,SUBSTRING(t8.FNUMBER,1,4) AA
 	                            ,t8.FNUMBER 科目编码 --科目编码
 	                            ,t5.FFULLNAME 科目名称 --科目名称
-	                            ,t6.FEXPLANATION 摘要 --摘要
+                                ,t5.FNAME 科目简称     --科目简称
+	                            ,t6.FEXPLANATION 摘要  --摘要
 	                            ,case t2.FFLEXITEMPROPERTYID when 4 then t3.fname when 100017 then t4.fname else '' end 销售员 --销售员
 	                            ,t6.FAMOUNT 本位币金额 --本位币金额
 	                            ,t6.FDEBIT 借方金额    --借方金额
@@ -81,12 +82,12 @@
 	                        SELECT @COUNT=COUNT(*) FROM #temp1
 	                        IF(@COUNT>0)
 	                        BEGIN
-		                        SET @SQL='SELECT AA,部门,科目编码,科目名称,SUM(CASE 余额方向 WHEN 1 THEN 借方金额 ELSE 贷方金额 END) 合计'
+		                        SET @SQL='SELECT AA,部门,科目编码,科目名称,科目简称,SUM(CASE 余额方向 WHEN 1 THEN 借方金额 ELSE 贷方金额 END) 合计'
 
 		                        SELECT @SQL=@SQL+',isnull (sum(case 销售员 when '''+销售员+''' then case 余额方向 when 1 then 借方金额 else 贷方金额 end end),0) as ['+销售员+']'
 		                        FROM (SELECT DISTINCT 销售员 FROM #temp1) AS A
 
-		                        SELECT @SQL=@SQL+'FROM #TEMP1 GROUP BY [AA],[部门],[科目编码],[科目名称] ORDER BY [AA]'
+		                        SELECT @SQL=@SQL+'FROM #TEMP1 GROUP BY [AA],[部门],[科目编码],[科目名称],[科目简称] ORDER BY [AA]'
 	  
 		                        EXEC(@SQL)
 	                        END 
