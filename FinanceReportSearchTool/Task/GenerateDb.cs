@@ -150,8 +150,8 @@ namespace FinanceReportSearchTool.Task
                 {
                     for (var rowid = 0; rowid < sourcedt.Rows.Count; rowid++)
                     {
-                        //若检测到[0]=DBNull.Value 或 [3]="科目合计",就continue
-                        if (sourcedt.Rows[rowid][0] == DBNull.Value || Convert.ToString(sourcedt.Rows[rowid][3]) == "科目合计") continue;
+                        //若检测到[0]=DBNull.Value 就continue
+                        if (sourcedt.Rows[rowid][0] == DBNull.Value) continue;
                         else
                         {
                             colsum += Convert.ToDecimal(sourcedt.Rows[rowid][colid]);
