@@ -154,10 +154,10 @@ namespace FinanceReportSearchTool.Task
                         if (sourcedt.Rows[rowid][0] == DBNull.Value) continue;
                         else
                         {
-                            colsum += Convert.ToDecimal(sourcedt.Rows[rowid][colid]);
-                            newrow[colid] = colsum;
-                        }
+                            colsum += Convert.ToDecimal(sourcedt.Rows[rowid][colid]);  
+                        }   
                     }
+                    newrow[colid] = colsum;
                     //最后还原sum变量
                     colsum = 0;
                 }
