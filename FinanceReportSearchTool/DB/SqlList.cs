@@ -24,7 +24,7 @@
 	                                            科目编码 nvarchar(250),科目名称 nvarchar(250),科目简称 nvarchar(250),
                                                 摘要 nvarchar(250),销售员 nvarchar(250),
 	                                            本位币金额 DECIMAL(25,2),借方金额 DECIMAL(25,2),贷方金额 DECIMAL(25,2),
-						                        余额方向 NVARCHAR(200)
+						                        余额方向 NVARCHAR(200),客户 NVARCHAR(200)
 	                                            )
 	                     
 	                        INSERT INTO #temp1(
@@ -32,7 +32,7 @@
 	                                        科目编码,科目名称,科目简称,
                                             摘要,销售员,
 	                                        本位币金额,借方金额,贷方金额,
-						                    余额方向)
+						                    余额方向,客户)
 	                        SELECT * 
 	                        FROM (
 	                        SELECT 
@@ -49,23 +49,26 @@
 	                            ,t6.FDEBIT 借方金额    --借方金额
 	                            ,t6.FCREDIT 贷方金额   --贷方金额
 		                        ,t8.FDC   余额方向     --余额方向（1:借方 -1:贷方）
+                                ,T12.FNAME 客户
 
 	                        FROM T_GL_VOUCHER t1
 	                        INNER join T_GL_VOUCHERENTRY t6 on t1.FVOUCHERID=t6.FVOUCHERID
 	                        INNER join T_BD_ACCOUNT t8 on t8.FACCTID=t6.FACCOUNTID
 	                        INNER join T_BD_ACCOUNT_L t5 on t6.FACCOUNTID=t5.FACCTID
 	                        INNER join T_BD_ACCOUNTFLEXENTRY t2 on t2.FACCTID=t5.FACCTID
-	                        LEFT JOIN T_BD_FLEXITEMDETAILV t7 on t7.FID=t6.FDETAILID
+	                        LEFT JOIN T_BD_FLEXITEMDETAILV t7 on t7.FID=t6.FDETAILID  --注:用于判断凭证内各信息的表(如:员工 销售员 客户信息)
 	                        LEFT JOIN dbo.T_BD_DEPARTMENT_L T11 ON T7.FFLEX5=T11.FDEPTID AND T11.FLOCALEID=2052 --部门
 
 	                        LEFT join T_HR_EMPINFO_L t3 on t3.FID=t7.FFLEX7     --员工
 	                        LEFT join V_BD_SALESMAN_L t4 on t4.fid=t7.FF100017  --销售员
+                            LEFT JOIN dbo.T_BD_CUSTOMER_L T12 ON T12.FCUSTID=T7.FFLEX6 --客户
+
 	                        LEFT JOIN dbo.T_HR_EMPINFO T9 ON T3.FID=T9.FID AND T9.FFORBIDSTATUS!='B'
 	                        LEFT JOIN dbo.V_BD_SALESMAN T10 ON T4.fid=T10.fid AND T10.FFORBIDSTATUS!='B'
 
 	                        WHERE (t8.FNUMBER like '6601.%' or t8.FNUMBER like '6001.%' or
 	                                t8.FNUMBER like '6051.%' or t8.FNUMBER like '6401.%' or t8.FNUMBER like '6402.%')
-	                        AND (t1.FDATE>='{sdt}' AND T1.FDATE<='{edt}')
+	                        AND (CONVERT(varchar(100),t1.fdate,23)>='{sdt}' AND CONVERT(varchar(100),t1.fdate,23)<='{edt}')
 	                        AND (case t2.FFLEXITEMPROPERTYID when 4 then t3.fname when 100017 then t4.fname else '' end)<>''
 	                        )X
 	                        WHERE (X.销售员='{saleman}' OR '{saleman}'='')
