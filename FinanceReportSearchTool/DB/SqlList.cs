@@ -20,7 +20,7 @@
 		                    drop table #temp1
 
 	                        CREATE TABLE #temp1(
-	                                            部门 NVARCHAR(250),凭证日期 nvarchar(250),AA NVARCHAR(100),
+	                                            FENTRYID INT,部门 NVARCHAR(250),凭证日期 nvarchar(250),AA NVARCHAR(100),
 	                                            科目编码 nvarchar(250),科目名称 nvarchar(250),科目简称 nvarchar(250),
                                                 摘要 nvarchar(250),销售员 nvarchar(250),
 	                                            本位币金额 DECIMAL(25,2),借方金额 DECIMAL(25,2),贷方金额 DECIMAL(25,2),
@@ -28,7 +28,7 @@
 	                                            )
 	                     
 	                        INSERT INTO #temp1(
-	                                        部门,凭证日期,AA,
+	                                        FENTRYID,部门,凭证日期,AA,
 	                                        科目编码,科目名称,科目简称,
                                             摘要,销售员,
 	                                        本位币金额,借方金额,贷方金额,
@@ -37,6 +37,7 @@
 	                        FROM (
 	                        SELECT 
 	                        DISTINCT
+                                T6.FENTRYID,
 		                        T11.FNAME 部门
 	                            ,CONVERT(varchar(100),t1.fdate,23) 凭证日期
 		                        ,SUBSTRING(t8.FNUMBER,1,4) AA
